@@ -18,6 +18,8 @@
     (cua-mode 1)
     (require 'company)
     (setq company-idle-delay 0.3)
+    (require 'elec-pair)
+    (electric-pair-mode 1)
     (require 'scheme)
     (require 'geiser)
     (setq geiser-guile-load-path
