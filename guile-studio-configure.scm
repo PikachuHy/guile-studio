@@ -128,6 +128,9 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
                   (set-window-dedicated-p (selected-window) t))
                 (run-guile)
                 (set-window-dedicated-p (selected-window) t)
+                ;; Hide the cluttered Tools and Options menu items
+                (define-key global-map (vector 'menu-bar 'tools) 'undefined)
+                (define-key global-map (vector 'menu-bar 'options) 'undefined)
 
                 ;; Prefer horizontal splits
                 (setq split-height-threshold nil)
@@ -148,6 +151,12 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
                 (unless (local-variable-p 'tool-bar-map)
                   (set (make-local-variable 'tool-bar-map)
                        scheme-tool-bar-map))))
+
+    ;; Don't show the Geiser menu in a Scheme buffer
+    (add-hook 'geiser-mode-hook
+              (lambda ()
+                (define-key geiser-mode-map
+                  (vector 'menu-bar 'geiserm) 'undefined)))
     (load-theme 'adwaita t)))
 
 (define (make-guile-studio-wrapper prefix share emacsdir)
