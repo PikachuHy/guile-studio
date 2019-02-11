@@ -43,6 +43,9 @@
           load-prefer-newer t
           save-place-file (concat user-emacs-directory "places"))
 
+    ;; Hide the fact that this is Emacs
+    (modify-frame-parameters nil '((title . "Guile Studio")))
+
     ;; Remember location in buffers
     (require 'saveplace)
     (setq-default save-place t)
