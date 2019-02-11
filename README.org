@@ -1,0 +1,12 @@
+Racket has Dr Racket.  Guile has ... Emacs?  This is Emacs with a few
+settings that make working with Guile easier for people new to Emacs.
+Features include: CUA mode, Geiser, tool bar icons to evaluate Guile
+buffers, support for Guile's very own picture language, code
+completion, a simple mode line, etc.
+
+Imagine a person who would love to learn Guile but is told to first
+learn Emacs.  “Guile Studio” aims to be a more suitable programming
+environment for Guile learners and Emacs agnostics.  The goal is not
+to create yet another “prelude” or starter pack for general use of
+Emacs.  Instead the only goal is to hide Emacs quirks and provide a
+pleasant Guile + Geiser experience out of the box.
