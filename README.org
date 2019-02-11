@@ -10,3 +10,11 @@ environment for Guile learners and Emacs agnostics.  The goal is not
 to create yet another “prelude” or starter pack for general use of
 Emacs.  Instead the only goal is to hide Emacs quirks and provide a
 pleasant Guile + Geiser experience out of the box.
+
+To install it try this:
+
+    git clone https://git.elephly.net/software/guile-studio.git
+    cd guile-studio
+    guix package -L guix -i guile-studio
+
+Run “guile-studio” to start it.
