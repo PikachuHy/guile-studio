@@ -1,6 +1,7 @@
 (define-module (rekado guile-studio))
 (use-modules (guix packages)
              (guix download)
+             (guix gexp)
              (guix build-system gnu)
              ((guix licenses) #:prefix license:)
              (gnu packages guile)
@@ -13,12 +14,7 @@
   (package
     (name "guile-studio")
     (version "0")
-    (source (origin
-              (method url-fetch)
-              (uri "https://elephly.net/downies/guile-studio-configure.scm")
-              (sha256
-               (base32
-                "025knvijpybjyygn9ljf53cfi1dza3n8h8xk4342krg42xlaiad3"))))
+    (source (local-file "../../guile-studio-configure.scm"))
     (build-system gnu-build-system)
     (arguments
      `(#:tests? #f                      ; there are none
