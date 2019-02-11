@@ -127,7 +127,12 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
                   (delete-other-windows)
                   (set-window-dedicated-p (selected-window) t))
                 (run-guile)
-                (set-window-dedicated-p (selected-window) t)))
+                (set-window-dedicated-p (selected-window) t)
+
+                ;; Prefer horizontal splits
+                (setq split-height-threshold nil)
+                (setq split-width-threshold 80)))
+
     (add-hook 'after-init-hook 'global-company-mode)
     (add-hook 'geiser-repl-mode-hook
               (lambda ()
