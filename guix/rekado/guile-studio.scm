@@ -44,6 +44,7 @@
        ("emacs" ,emacs)
        ("emacs-geiser" ,emacs-geiser)
        ("emacs-company" ,emacs-company)
+       ("emacs-flycheck" ,emacs-flycheck)
        ("emacs-smart-mode-line" ,emacs-smart-mode-line)
        ("emacs-paren-face" ,emacs-paren-face)
        ("adwaita-icon-theme" ,adwaita-icon-theme)))
