@@ -86,7 +86,7 @@
     (require 'flycheck)
     (flycheck-define-checker guile
                              "A Guile syntax checker with `guild compile'."
-                             :command ("guild" "compile"
+                             :command ("guild" "compile" "--to=cps"
                                        "--warn=unused-variable"
                                        "--warn=unused-toplevel"
                                        "--warn=unbound-variable"
