@@ -47,6 +47,41 @@
     ;; Hide the fact that this is Emacs
     (modify-frame-parameters nil '((title . "Guile Studio")))
 
+    ;; Unclutter help menu.
+    (require 'menu-bar)
+    (defun menu-bar-read-guileref ()
+      "Display the Guile Reference manual in Info mode."
+      (interactive)
+      (info "guile"))
+    (setq menu-bar-help-menu
+          (let ((menu (make-sparse-keymap "Help")))
+            (bindings--define-key menu (vector 'about-gnu-project)
+                                  '(menu-item "About GNU" describe-gnu-project
+                                              :help "About the GNU System, GNU Project, and GNU/Linux"))
+            (bindings--define-key menu (vector 'about-emacs)
+                                  '(menu-item "About Emacs" about-emacs
+                                              :help "Display version number, copyright info, and basic help"))
+            (bindings--define-key menu (vector 'sep2)
+                                  menu-bar-separator)
+            (bindings--define-key menu (vector 'other-manuals)
+                                  '(menu-item "All Other Manuals (Info)" Info-directory
+                                              :help "Read any of the installed manuals"))
+            (bindings--define-key menu (vector 'emacs-manual)
+                                  '(menu-item "Read the Emacs Manual" info-emacs-manual
+                                              :help "Full documentation of Emacs features"))
+            (bindings--define-key menu (vector 'guile-reference)
+                                  '(menu-item "Guile Reference" menu-bar-read-guileref
+                                              :help "Read the Guile Reference manual"))
+            (bindings--define-key menu (vector 'sep1)
+                                  menu-bar-separator)
+            (bindings--define-key menu (vector 'emacs-tutorial-language-specific)
+                                  '(menu-item "Emacs Tutorial (choose language)..."
+                                              help-with-tutorial-spec-language
+                                              :help "Learn how to use Emacs (choose a language)"))
+            menu))
+    (bindings--define-key global-map (vector 'menu-bar 'help-menu)
+                          (cons (purecopy "Help") menu-bar-help-menu))
+
     ;; Check syntax on the fly
     (require 'flycheck)
     (flycheck-define-checker guile
