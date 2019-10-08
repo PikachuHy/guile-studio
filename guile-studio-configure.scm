@@ -82,6 +82,58 @@
     (bindings--define-key global-map (vector 'menu-bar 'help-menu)
                           (cons (purecopy "Help") menu-bar-help-menu))
 
+    ;; Unclutter File menu
+    (setq menu-bar-file-menu
+          (let ((menu (make-sparse-keymap "File")))
+            (bindings--define-key menu (vector 'exit-emacs)
+                                  '(menu-item "Quit" save-buffers-kill-terminal
+                                              :help "Save unsaved buffers, then exit"))
+            (bindings--define-key menu (vector 'sep-exit)
+                                  menu-bar-separator)
+            (bindings--define-key menu (vector 'revert-buffer)
+                                  '(menu-item "Revert Buffer" revert-buffer
+                                              :enable
+                                              (or
+                                               (not
+                                                (eq revert-buffer-function 'revert-buffer--default))
+                                               (not
+                                                (eq revert-buffer-insert-file-contents-function
+                                                    'revert-buffer-insert-file-contents--default-function))
+                                               (and buffer-file-number
+                                                    (not
+                                                     (verify-visited-file-modtime
+                                                      (current-buffer)))))
+                                              :help "Re-read current buffer from its file"))
+            (bindings--define-key menu (vector 'write-file)
+                                  '(menu-item "Save As..." write-file
+                                              :enable menu-bar-menu-frame-live-and-visible-p
+                                              :help "Write current buffer to another file"))
+            (bindings--define-key menu (vector 'save-buffer)
+                                  '(menu-item "Save" save-buffer :enable
+                                              (and (buffer-modified-p)
+                                                   (buffer-file-name))
+                                              :help "Save current buffer to its file"))
+            (bindings--define-key menu (vector 'sep-save)
+                                  menu-bar-separator)
+            (bindings--define-key menu (vector 'kill-buffer)
+                                  '(menu-item "Close" kill-this-buffer :enable
+                                              (kill-this-buffer-enabled-p)
+                                              :help "Discard (kill) current buffer"))
+
+            (bindings--define-key menu (vector 'dired)
+                                  '(menu-item "Open Directory..." dired
+                                              :help "Read a directory, to operate on its files"))
+            (bindings--define-key menu (vector 'open-file)
+                                  '(menu-item "Open File..." menu-find-file-existing
+                                              :help "Read an existing file into an Emacs buffer"))
+            (bindings--define-key menu (vector 'new-file)
+                                  '(menu-item "Visit New File..." find-file
+                                              :enable menu-bar-non-minibuffer-window-p
+                                              :help "Specify a new file's name, to edit the file"))
+            menu))
+    (bindings--define-key global-map (vector 'menu-bar 'file)
+                          (cons (purecopy "File") menu-bar-file-menu))
+
     ;; Check syntax on the fly
     (require 'flycheck)
     (flycheck-define-checker guile
