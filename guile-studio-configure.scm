@@ -256,7 +256,9 @@ exec ~a/bin/emacs -Q --load ~a/guile-studio.el
        (make-guile-studio-wrapper prefix share emacsdir)
        (with-output-to-file (string-append share "/guile-studio-init")
          (lambda ()
-           (format #t "~s" '(use-modules (pict))))))
+           (format #t "~s" '(begin
+                              (set! (@@ (system repl common) repl-welcome) (const #t))
+                              (use-modules (pict))))))
      #t)
     ((script . _)
      (format (current-error-port)
