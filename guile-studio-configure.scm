@@ -28,7 +28,7 @@
             ,(string-append picture-language
                             "/lib/guile/2.2/site-ccache/")))
     (setq geiser-guile-init-file ,(string-append prefix
-                                                 "/share/guile-studio-init"))
+                                                 "/share/guile-studio-init.scm"))
     (setq geiser-autodoc-identifier-format "%s ~ %s")
     (setq geiser-default-implementation 'guile
           initial-major-mode 'scheme-mode
@@ -306,7 +306,7 @@ exec ~a/bin/emacs -Q --load ~a/guile-studio.el
            (pretty-print (generate-configuration prefix emacsdir picture-language icons emacs-package-dirs)
                          #:display? #f)))
        (make-guile-studio-wrapper prefix share emacsdir)
-       (with-output-to-file (string-append share "/guile-studio-init")
+       (with-output-to-file (string-append share "/guile-studio-init.scm")
          (lambda ()
            (format #t "~s" '(begin
                               (set! (@@ (system repl common) repl-welcome) (const #t))
