@@ -311,6 +311,9 @@ exec ~a/bin/emacs -Q --load ~a/guile-studio.el
            (format #t "~s" '(begin
                               (set! (@@ (system repl common) repl-welcome) (const #t))
                               (use-modules (pict))))))
+       (compile-file (string-append share "/guile-studio-init.scm")
+                     #:output-file
+                     (string-append share "/guile-studio-init.go")))
      #t)
     ((script . _)
      (format (current-error-port)
