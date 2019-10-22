@@ -3,8 +3,11 @@
 
 (define (generate-configuration prefix emacsdir picture-language icons emacs-package-dirs)
   `(progn
-    (load (expand-file-name
-           ,(string-append emacsdir "/share/emacs/site-lisp/guix-emacs.el")))
+    (let ((guix-emacs.el
+           (expand-file-name
+            ,(string-append emacsdir "/share/emacs/site-lisp/guix-emacs.el"))))
+      (when (file-exists-p guix-emacs.el)
+        (load guix-emacs.el)))
     (when (require 'guix-emacs nil t)
       (guix-emacs-autoload-packages ,@emacs-package-dirs))
 
