@@ -221,7 +221,10 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
 
     (defun geiser--guile-picture-language--pict-from-file ()
       (interactive)
-      (let ((file (read-file-name "Insert image: " nil nil t)))
+      (let ((file (read-file-name "Insert image: " nil nil t nil
+                                  (lambda (name)
+                                    (or (string-suffix-p ".svg" name t)
+                                        (string-suffix-p ".png" name t))))))
         (geiser-repl--send
          (concat "(pict-from-file \""
                  file
