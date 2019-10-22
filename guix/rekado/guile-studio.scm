@@ -10,17 +10,22 @@
              (gnu packages emacs-xyz)
              (gnu packages gnome))
 
+
+;;; XXX big bad hack...
+(system* "tar" "-cf" "/tmp/guile-studio.tar"
+         "--exclude-vcs" "--exclude" "guix"
+         "-C" "/home/rekado/dev/" "guile-studio")
+
 (define-public guile-studio
   (package
-    (name "guile-studio")
+    (name "guile-studio-devel")
     (version "0")
-    (source (local-file "../../guile-studio-configure.scm"))
+    (source "/tmp/guile-studio.tar")
     (build-system gnu-build-system)
     (arguments
      `(#:tests? #f                      ; there are none
        #:phases
        (modify-phases %standard-phases
-         (delete 'unpack)
          (delete 'configure)
          (replace 'build
            (lambda* (#:key source inputs outputs #:allow-other-keys)
@@ -29,7 +34,8 @@
                     (share (string-append out "/share/")))
                (mkdir-p share)
                (mkdir-p bin)
-               (apply invoke "guile" "-s" source
+               (apply invoke "guile" "-s"
+                      "guile-studio-configure.scm"
                       out
                       (assoc-ref inputs "emacs")
                       (assoc-ref inputs "guile-picture-language")
