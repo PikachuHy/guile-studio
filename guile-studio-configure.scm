@@ -25,13 +25,22 @@
     (electric-pair-mode 1)
     (require 'scheme)
     (require 'geiser)
+
+    ;; Add site-ccache directories to %load-compiled-path, and run the
+    ;; init routine.  We don't use geiser-guile-init-file because that
+    ;; would lead to compilation messages in the REPL when Guile
+    ;; Studio is first started.
+    (defun guile-studio--geiser-guile--parameters (params)
+      (append (list "-C" ,(string-append prefix "/lib/guile/2.2/site-ccache/"))
+              (list "-C" ,(string-append picture-language "/lib/guile/2.2/site-ccache/"))
+              params
+              (list "-e" "(@ (guile-studio-init) guile-studio-init)")))
+    (advice-add 'geiser-guile--parameters
+                :filter-return (function guile-studio--geiser-guile--parameters))
     (setq geiser-guile-load-path
           '(,(string-append picture-language
-                            "/share/guile/site/2.2/")
-            ,(string-append picture-language
-                            "/lib/guile/2.2/site-ccache/")))
-    (setq geiser-guile-init-file ,(string-append prefix
-                                                 "/share/guile-studio-init.scm"))
+                            "/share/guile/site/2.2/")))
+
     (setq geiser-autodoc-identifier-format "%s ~ %s")
     (setq geiser-default-implementation 'guile
           initial-major-mode 'scheme-mode
@@ -315,11 +324,14 @@ exec ~a/bin/emacs -Q --load ~a/guile-studio.el
        (with-output-to-file (string-append share "/guile-studio-init.scm")
          (lambda ()
            (format #t "~s" '(begin
-                              (set! (@@ (system repl common) repl-welcome) (const #t))
-                              (use-modules (pict))))))
+                              (define-module (guile-studio-init))
+                              (define-public (guile-studio-init . any)
+                                (set! (@@ (system repl common) repl-welcome) (const #t))
+                                (use-modules (pict)))))))
        (compile-file (string-append share "/guile-studio-init.scm")
                      #:output-file
-                     (string-append share "/guile-studio-init.go")))
+                     (string-append prefix "/lib/guile/2.2/site-ccache/"
+                                    "/guile-studio-init.go")))
      #t)
     ((script . _)
      (format (current-error-port)
