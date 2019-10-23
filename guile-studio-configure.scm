@@ -41,7 +41,7 @@
           '(,(string-append picture-language
                             "/share/guile/site/2.2/")))
 
-    (setq geiser-autodoc-identifier-format "%s ~ %s")
+    (setq geiser-autodoc-identifier-format "%s → %s")
     (setq geiser-default-implementation 'guile
           initial-major-mode 'scheme-mode
           inhibit-splash-screen t
