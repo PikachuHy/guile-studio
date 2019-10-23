@@ -133,18 +133,9 @@ with the "
             (bindings--define-key menu (vector 'other-manuals)
                                   '(menu-item "All Other Manuals (Info)" Info-directory
                                               :help "Read any of the installed manuals"))
-            (bindings--define-key menu (vector 'emacs-manual)
-                                  '(menu-item "Read the Emacs Manual" info-emacs-manual
-                                              :help "Full documentation of Emacs features"))
             (bindings--define-key menu (vector 'guile-reference)
                                   '(menu-item "Guile Reference" menu-bar-read-guileref
                                               :help "Read the Guile Reference manual"))
-            (bindings--define-key menu (vector 'sep1)
-                                  menu-bar-separator)
-            (bindings--define-key menu (vector 'emacs-tutorial-language-specific)
-                                  '(menu-item "Emacs Tutorial (choose language)..."
-                                              help-with-tutorial-spec-language
-                                              :help "Learn how to use Emacs (choose a language)"))
             menu))
     (bindings--define-key global-map (vector 'menu-bar 'help-menu)
                           (cons (purecopy "Help") menu-bar-help-menu))
