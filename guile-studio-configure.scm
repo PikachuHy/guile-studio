@@ -43,6 +43,8 @@
 
     (setq geiser-autodoc-identifier-format "%s → %s")
     (setq geiser-default-implementation 'guile
+          geiser-active-implementations '(guile)
+
           initial-major-mode 'scheme-mode
           inhibit-splash-screen t
           confirm-kill-processes nil    ; kill Geiser on exit
