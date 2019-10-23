@@ -67,14 +67,67 @@
       "Display the Guile Reference manual in Info mode."
       (interactive)
       (info "guile"))
+    (defvar about-guile-studio-text
+      `((:face (variable-pitch font-lock-comment-face)
+         "Welcome to Guile Studio, an Emacs environment to play
+with the "
+         :link ("GNU Guile programming language"
+	            ,(lambda (_button) (browse-url "https://www.gnu.org/software/guile/"))
+	            "Browse https://www.gnu.org/software/guile/")
+         " and its picture language.\n\n"
+
+         :face variable-pitch
+         :link ("View Guile Manual" ,(lambda (_button) (menu-bar-read-guileref)))
+         "\tView the Guile manual using Info\n"
+         "\n")))
+
+    (defun about-guile-studio ()
+      "Display the Guile Studio about buffer."
+      (interactive)
+      (let ((splash-buffer (get-buffer-create "*Guile Studio*")))
+        (with-current-buffer
+         splash-buffer
+         (let ((inhibit-read-only t))
+           (erase-buffer)
+           (setq default-directory command-line-default-directory)
+           (make-local-variable 'startup-screen-inhibit-startup-screen)
+           (let* ((image-file ,(string-append prefix "/share/logo.svg"))
+	              (img (create-image image-file))
+	              (image-width (and img (car (image-size img))))
+	              (window-width (window-width)))
+             (when img
+               (when (> window-width image-width)
+                 ;; Center the image in the window.
+	             (insert (propertize " " 'display
+			                         `(space :align-to (+ center (-0.5 . ,img)))))
+
+                 ;; Insert the image with a help-echo and a link.
+	             (make-button (prog1 (point) (insert-image img)) (point)
+		                      'face 'default
+		                      'help-echo "mouse-2, RET: Browse https://www.gnu.org/software/guile"
+		                      'action (lambda (_button) (browse-url "https://www.gnu.org/software/guile"))
+		                      'follow-link t)
+	             (insert "\n\n"))))
+           (dolist (text about-guile-studio-text)
+                   (apply (function fancy-splash-insert) text)
+                   (insert "\n")))
+         (use-local-map splash-screen-keymap)
+         (setq buffer-read-only t)
+         (set-buffer-modified-p nil)
+         (if (and view-read-only (not view-mode))
+             (view-mode-enter nil 'kill-buffer))
+         (goto-char (point-min))
+         (forward-line 4))
+        (switch-to-buffer splash-buffer)))
+
     (setq menu-bar-help-menu
           (let ((menu (make-sparse-keymap "Help")))
             (bindings--define-key menu (vector 'about-gnu-project)
                                   '(menu-item "About GNU" describe-gnu-project
                                               :help "About the GNU System, GNU Project, and GNU/Linux"))
-            (bindings--define-key menu (vector 'about-emacs)
-                                  '(menu-item "About Emacs" about-emacs
-                                              :help "Display version number, copyright info, and basic help"))
+            (bindings--define-key menu (vector 'about-guile-studio)
+                                  '(menu-item "About Guile Studio" about-guile-studio
+                                              :help "About this program"))
             (bindings--define-key menu (vector 'sep2)
                                   menu-bar-separator)
             (bindings--define-key menu (vector 'other-manuals)
@@ -322,6 +375,9 @@ exec ~a/bin/emacs -Q --load ~a/guile-studio.el
          (lambda ()
            (pretty-print (generate-configuration prefix emacsdir picture-language icons emacs-package-dirs)
                          #:display? #f)))
+       ;; CC-BY-SA 4.0 Luis Felipe López Acevedo (aka sirgazil)
+       (copy-file "logo.svg"
+                  (string-append share "/logo.svg"))
        (make-guile-studio-wrapper prefix share emacsdir)
        (with-output-to-file (string-append share "/guile-studio-init.scm")
          (lambda ()
