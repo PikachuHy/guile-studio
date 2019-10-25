@@ -1,7 +1,10 @@
 (use-modules (ice-9 pretty-print)
-             (ice-9 match))
+             (ice-9 match)
+             (ice-9 ftw)
+             (srfi srfi-1)
+             (srfi srfi-26))
 
-(define (generate-configuration prefix emacsdir picture-language icons emacs-package-dirs)
+(define (generate-configuration prefix emacsdir guiledir picture-language icons emacs-package-dirs)
   `(progn
     (let ((guix-emacs.el
            (expand-file-name
@@ -15,6 +18,12 @@
     (tool-bar-mode 1)
     (menu-bar-mode 1)
     (set-scroll-bar-mode 'right)
+
+    (require 'info)
+    (setq Info-directory-list
+          '(,(string-append prefix "/share/guile-studio/info/")
+            ,(string-append picture-language "/share/info/")
+            ,(string-append guiledir "/share/info/")))
 
     ;; Use Ctrl-C/X/Z for copy, cut, paste
     (require 'cua-base)
@@ -359,17 +368,46 @@ exec ~a/bin/emacs -Q --load ~a/guile-studio.el
     (chmod wrapper #o555)))
 
 (define (main)
+  (define (info-file? file)
+    (or (string-suffix? ".info" file)
+        (string-suffix? ".info.gz" file)))
+  (define (info-files top)
+    (let ((infodir (string-append top "/share/info")))
+      (map (cut string-append infodir "/" <>)
+           (or (scandir infodir info-file?) '()))))
   (match (command-line)
-    ((_ prefix emacsdir picture-language icons . emacs-package-dirs)
-     (let ((share (string-append prefix "/share")))
+    ((_ prefix emacsdir guiledir picture-language icons . emacs-package-dirs)
+     (let* ((share (string-append prefix "/share"))
+            (datadir (string-append share "/guile-studio"))
+            (infodir (string-append datadir "/info")))
+       ;; Generate Info directory
+       (mkdir datadir)
+       (mkdir infodir)
+       (for-each
+        (lambda (info)
+          (system* "install-info" "--debug" info
+                   (string-append infodir "/dir")))
+        (append-map info-files (list picture-language guiledir)))
+
+       ;; Generate Emacs startup file
        (with-output-to-file (string-append share "/guile-studio.el")
          (lambda ()
-           (pretty-print (generate-configuration prefix emacsdir picture-language icons emacs-package-dirs)
-                         #:display? #f)))
+           (pretty-print
+            (generate-configuration prefix
+                                    emacsdir
+                                    guiledir
+                                    picture-language
+                                    icons
+                                    emacs-package-dirs)
+            #:display? #f)))
+
        ;; CC-BY-SA 4.0 Luis Felipe López Acevedo (aka sirgazil)
        (copy-file "logo.svg"
                   (string-append share "/logo.svg"))
+
        (make-guile-studio-wrapper prefix share emacsdir)
+
+       ;; Generate Guile init file.
        (with-output-to-file (string-append share "/guile-studio-init.scm")
          (lambda ()
            (format #t "~s" '(begin
