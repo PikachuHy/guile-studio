@@ -13,6 +13,8 @@ pleasant Guile + Geiser experience out of the box.
 
 To build Guile Studio from source with Guix and run it try this:
 
-    git clone https://git.elephly.net/software/guile-studio.git
-    cd guile-studio
-    $(guix build -L guix guile-studio-devel)/bin/guile-studio
+#+BEGIN_SRC sh
+git clone https://git.elephly.net/software/guile-studio.git
+cd guile-studio
+make dist && $(guix build -L guix guile-studio-devel)/bin/guile-studio
+#+END_SRC

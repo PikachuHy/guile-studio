@@ -8,41 +8,32 @@
              (gnu packages guile-xyz)
              (gnu packages emacs)
              (gnu packages emacs-xyz)
-             (gnu packages gnome))
-
-
-;;; XXX big bad hack...
-(system* "tar" "-cf" "/tmp/guile-studio.tar"
-         "--exclude-vcs" "--exclude" "guix"
-         "-C" "/home/rekado/dev/" "guile-studio")
+             (gnu packages gnome)
+             (gnu packages texinfo))
 
 (define-public guile-studio
   (package
     (name "guile-studio-devel")
-    (version "0")
-    (source "/tmp/guile-studio.tar")
+    (version "0.0.1")
+    (source (local-file (string-append "../../guile-studio-" version ".tar.gz")))
     (build-system gnu-build-system)
     (arguments
      `(#:tests? #f                      ; there are none
+       #:make-flags
+       (list (string-append "ICONS_DIR="
+                            (assoc-ref %build-inputs "adwaita-icon-theme")
+                            "/share/icons/Adwaita/")
+             (string-append "PICT_DIR="
+                            (assoc-ref %build-inputs "guile-picture-language"))
+             (string-append "EMACS_DIR="
+                            (assoc-ref %build-inputs "emacs"))
+             (string-append "GUILE_DIR="
+                            (assoc-ref %build-inputs "guile"))
+             (string-join (cons "INPUTS=" (map cdr %build-inputs)))
+             (string-append "PREFIX=" (assoc-ref %outputs "out")))
        #:phases
        (modify-phases %standard-phases
          (delete 'configure)
-         (replace 'build
-           (lambda* (#:key source inputs outputs #:allow-other-keys)
-             (let* ((out   (assoc-ref outputs "out"))
-                    (bin   (string-append out "/bin/"))
-                    (share (string-append out "/share/")))
-               (mkdir-p share)
-               (mkdir-p bin)
-               (apply invoke "guile" "-s"
-                      "guile-studio-configure.scm"
-                      out
-                      (assoc-ref inputs "emacs")
-                      (assoc-ref inputs "guile-picture-language")
-                      (string-append (assoc-ref inputs "adwaita-icon-theme")
-                                     "/share/icons/Adwaita/")
-                      (map cdr inputs))
-               #t)))
          (delete 'install))))
     (inputs
      `(("guile" ,guile-2.2)
@@ -54,6 +45,8 @@
        ("emacs-smart-mode-line" ,emacs-smart-mode-line)
        ("emacs-paren-face" ,emacs-paren-face)
        ("adwaita-icon-theme" ,adwaita-icon-theme)))
+    (native-inputs
+     `(("texinfo" ,texinfo)))
     (home-page "https://gnu.org/software/guile")
     (synopsis "Totally not a cheap copy of Dr Racket for Guile")
     (description
