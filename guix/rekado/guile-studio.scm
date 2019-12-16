@@ -14,7 +14,7 @@
 (define-public guile-studio
   (package
     (name "guile-studio-devel")
-    (version "0.0.1")
+    (version "0.0.2")
     (source (local-file (string-append "../../guile-studio-" version ".tar.gz")))
     (build-system gnu-build-system)
     (arguments
