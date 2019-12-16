@@ -18,7 +18,11 @@
     (source (local-file (string-append "../../guile-studio-" version ".tar.gz")))
     (build-system gnu-build-system)
     (arguments
-     `(#:tests? #f                      ; there are none
+     `(#:modules
+       ((ice-9 match)
+        (srfi srfi-1)
+        ,@%gnu-build-system-modules)
+       #:tests? #f                      ; there are none
        #:make-flags
        (list (string-append "ICONS_DIR="
                             (assoc-ref %build-inputs "adwaita-icon-theme")
@@ -29,7 +33,13 @@
                             (assoc-ref %build-inputs "emacs"))
              (string-append "GUILE_DIR="
                             (assoc-ref %build-inputs "guile"))
-             (string-join (cons "INPUTS=" (map cdr %build-inputs)))
+             (string-join (cons "INPUTS="
+                                (filter-map
+                                 (lambda (input)
+                                   (match input
+                                     ((label . pkg)
+                                      (and (string-prefix? "emacs" label) pkg))))
+                                 %build-inputs)))
              (string-append "PREFIX=" (assoc-ref %outputs "out")))
        #:phases
        (modify-phases %standard-phases

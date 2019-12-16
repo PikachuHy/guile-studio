@@ -12,7 +12,7 @@
       (when (file-exists-p guix-emacs.el)
         (load guix-emacs.el)))
     (when (require 'guix-emacs nil t)
-      (guix-emacs-autoload-packages ,@emacs-package-dirs))
+      (guix-emacs-autoload-packages))
 
     (setq-default indent-tabs-mode nil)
     (tool-bar-mode 1)
@@ -357,13 +357,17 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
                   (vector 'menu-bar 'geiserm) 'undefined)))
     (load-theme 'adwaita t)))
 
-(define (make-guile-studio-wrapper prefix share emacsdir)
+(define (make-guile-studio-wrapper prefix share emacsdir emacs-package-dirs)
   (let ((wrapper (string-append prefix "/bin/guile-studio")))
     (with-output-to-file wrapper
       (lambda ()
         (format #t "#!/bin/sh
-exec ~a/bin/emacs -Q --load ~a/guile-studio.el
+EMACSLOADPATH=~a:
+exec ~a/bin/emacs --no-site-file --no-site-lisp --no-x-resources --no-init-file --load ~a/guile-studio.el
 "
+                (string-join
+                 (map (cut string-append <> "/share/emacs/site-lisp")
+                      emacs-package-dirs) ":")
                 emacsdir share)))
     (chmod wrapper #o555)))
 
@@ -405,7 +409,7 @@ exec ~a/bin/emacs -Q --load ~a/guile-studio.el
        (copy-file "logo.svg"
                   (string-append share "/logo.svg"))
 
-       (make-guile-studio-wrapper prefix share emacsdir)
+       (make-guile-studio-wrapper prefix share emacsdir emacs-package-dirs)
 
        ;; Generate Guile init file.
        (with-output-to-file (string-append share "/guile-studio-init.scm")
