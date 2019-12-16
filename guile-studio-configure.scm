@@ -299,7 +299,7 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
       '(menu-item " Insert image" geiser--guile-picture-language--pict-from-file
                   :image
                   (image :type png
-                         :file ,(string-append icons "/24x24/actions/insert-image.png"))
+                         :file ,(string-append icons "/24x24/legacy/insert-image.png"))
                   :help "Insert image..."))
 
     (defvar scheme-tool-bar-map (make-sparse-keymap))
@@ -307,13 +307,13 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
       '(menu-item " Evaluate" geiser-eval-buffer
                   :image
                   (image :type png
-                         :file ,(string-append icons "/24x24/actions/media-playback-start.png"))
+                         :file ,(string-append icons "/24x24/legacy/media-playback-start.png"))
                   :help "Evaluate buffer..."))
     (define-key scheme-tool-bar-map (vector 'lookup-documentation)
       '(menu-item " Documentation" geiser-doc-symbol-at-point
                   :image
                   (image :type png
-                         :file ,(string-append icons "/24x24/actions/help-faq.png"))
+                         :file ,(string-append icons "/24x24/legacy/help-faq.png"))
                   :help "Show documentation for the current symbol"))
     
     (add-hook 'emacs-startup-hook
