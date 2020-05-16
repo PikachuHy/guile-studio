@@ -40,15 +40,15 @@
     ;; would lead to compilation messages in the REPL when Guile
     ;; Studio is first started.
     (defun guile-studio--geiser-guile--parameters (params)
-      (append (list "-C" ,(string-append prefix "/lib/guile/2.2/site-ccache/"))
-              (list "-C" ,(string-append picture-language "/lib/guile/2.2/site-ccache/"))
+      (append (list "-C" ,(string-append prefix "/lib/guile/3.0/site-ccache/"))
+              (list "-C" ,(string-append picture-language "/lib/guile/3.0/site-ccache/"))
               params
               (list "-e" "(@ (guile-studio-init) guile-studio-init)")))
     (advice-add 'geiser-guile--parameters
                 :filter-return (function guile-studio--geiser-guile--parameters))
     (setq geiser-guile-load-path
           '(,(string-append picture-language
-                            "/share/guile/site/2.2/")))
+                            "/share/guile/site/3.0/")))
 
     (setq geiser-autodoc-identifier-format "%s → %s")
     (setq geiser-default-implementation 'guile
@@ -421,7 +421,7 @@ exec ~a/bin/emacs --no-site-file --no-site-lisp --no-x-resources --no-init-file 
                                 (use-modules (pict)))))))
        (compile-file (string-append share "/guile-studio-init.scm")
                      #:output-file
-                     (string-append prefix "/lib/guile/2.2/site-ccache/"
+                     (string-append prefix "/lib/guile/3.0/site-ccache/"
                                     "/guile-studio-init.go")))
      #t)
     ((script . _)
