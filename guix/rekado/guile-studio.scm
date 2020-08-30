@@ -14,8 +14,8 @@
 (define-public guile-studio
   (package
     (name "guile-studio-devel")
-    (version "0.0.2")
-    (source (local-file (string-append "../../guile-studio-" version ".tar.gz")))
+    (version "0.0.3")
+    (source (local-file (string-append "guile-studio-" version ".tar.gz")))
     (build-system gnu-build-system)
     (arguments
      `(#:modules
@@ -52,6 +52,7 @@
        ("emacs-geiser" ,emacs-geiser)
        ("emacs-company" ,emacs-company)
        ("emacs-flycheck" ,emacs-flycheck)
+       ("emacs-flycheck-guile" ,emacs-flycheck-guile)
        ("emacs-smart-mode-line" ,emacs-smart-mode-line)
        ("emacs-paren-face" ,emacs-paren-face)
        ("adwaita-icon-theme" ,adwaita-icon-theme)))
