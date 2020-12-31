@@ -283,6 +283,8 @@ with the "
                 (let ((buf (generate-new-buffer "untitled.scm")))
                   (switch-to-buffer buf nil t)
                   (funcall (and initial-major-mode))
+                  (insert ";;; Welcome to Guile Studio!\n")
+                  (insert ";;; Type your Guile program here and evaluate it.\n")
                   (setq buffer-offer-save t)
                   (delete-other-windows)
                   (set-window-dedicated-p (selected-window) t))
