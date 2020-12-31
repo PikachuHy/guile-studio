@@ -81,6 +81,10 @@
       "Display the Guile Reference manual in Info mode."
       (interactive)
       (info "guile"))
+    (defun menu-bar-read-pictref ()
+      "Display the Picture Language manual in Info mode."
+      (interactive)
+      (info "picture-language"))
     (defvar about-guile-studio-text
       `((:face (variable-pitch font-lock-comment-face)
          "Welcome to Guile Studio, an Emacs environment to play
@@ -92,7 +96,9 @@ with the "
 
          :face variable-pitch
          :link ("View Guile Manual" ,(lambda (_button) (menu-bar-read-guileref)))
-         "\tView the Guile manual using Info\n"
+         "\tView the Guile manual.\n"
+         :link ("View Picture Language Manual" ,(lambda (_button) (menu-bar-read-pictref)))
+         "\tView the Picture Language manual.\n"
          "\n")))
 
     (defun about-guile-studio ()
