@@ -49,13 +49,16 @@
      `(("guile" ,guile-3.0)
        ("guile-picture-language" ,guile-picture-language)
        ("emacs" ,emacs)
+       ("emacs-f" ,emacs-f) ; TODO: needed by doom-modeline
+       ("emacs-memoize" ,emacs-memoize) ; TODO: needed by all-the-icons
+       ("emacs-all-the-icons" ,emacs-all-the-icons)
+       ("emacs-doom-modeline" ,emacs-doom-modeline)
        ("emacs-modus-themes" ,emacs-modus-themes)
        ("emacs-geiser" ,emacs-geiser)
        ("emacs-company" ,emacs-company)
        ("emacs-ivy" ,emacs-ivy)
        ("emacs-flycheck" ,emacs-flycheck)
        ("emacs-flycheck-guile" ,emacs-flycheck-guile)
-       ("emacs-smart-mode-line" ,emacs-smart-mode-line)
        ("emacs-paren-face" ,emacs-paren-face)
        ("adwaita-icon-theme" ,adwaita-icon-theme)))
     (native-inputs
