@@ -19,6 +19,11 @@
     (menu-bar-mode 1)
     (scroll-bar-mode -1)
 
+    (require 'ivy)
+    (ivy-mode 1)
+    ;; Enter directory when hitting RET
+    (define-key ivy-minibuffer-map (kbd "<return>") 'ivy-alt-done)
+
     (require 'info)
     (setq Info-directory-list
           '(,(string-append prefix "/share/guile-studio/info/")

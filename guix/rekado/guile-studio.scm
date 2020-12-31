@@ -51,6 +51,7 @@
        ("emacs" ,emacs)
        ("emacs-geiser" ,emacs-geiser)
        ("emacs-company" ,emacs-company)
+       ("emacs-ivy" ,emacs-ivy)
        ("emacs-flycheck" ,emacs-flycheck)
        ("emacs-flycheck-guile" ,emacs-flycheck-guile)
        ("emacs-smart-mode-line" ,emacs-smart-mode-line)
