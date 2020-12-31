@@ -285,7 +285,10 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
                   (image :type png
                          :file ,(string-append icons "/24x24/legacy/help-faq.png"))
                   :help "Show documentation for the current symbol"))
-    
+
+    (add-to-list 'initial-frame-alist
+                 '(fullscreen . maximized))
+
     (add-hook 'emacs-startup-hook
               (lambda ()
                 (let ((buf (generate-new-buffer "untitled.scm")))
