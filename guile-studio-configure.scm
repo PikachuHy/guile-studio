@@ -215,6 +215,48 @@ with the "
     (require 'saveplace)
     (setq-default save-place t)
 
+    ;; Right side window
+    (defvar popup-right-side-windows
+      (rx (or "*Guile Studio*"
+              "*Geiser documentation*"
+              (seq "*Help" (* anychar) "*")
+              "*info*")))
+    (add-to-list 'display-buffer-alist
+                 `(,popup-right-side-windows
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (side            . right)
+                   (slot            . 0)
+                   (preserve-size   . (t . t))
+                   (window-width    . 80)
+                   (window-height   . 1.0)))
+
+    ;; Bottom side window
+    (defvar popup-bottom-windows
+      (rx (or "*Flycheck*"
+              "*Flymake*"
+              "*Backtrace*"
+              "*Warnings*"
+              "*Compile-Log*"
+              "*Messages*"
+              "*Geiser-dbg*"
+              (seq (* anychar) "*Completions" (* anychar)))))
+    (add-to-list 'display-buffer-alist
+                 `(,popup-bottom-windows
+                   (display-buffer-reuse-window
+                    display-buffer-in-side-window)
+                   (side            . bottom)
+                   (slot            . 0)
+                   (preserve-size   . (t . t))
+                   (window-height   . 0.16)))
+
+    (defvar bottom-windows
+      (rx (seq "* Guile REPL *" (* anychar))))
+    (add-to-list 'display-buffer-alist
+                 `(,bottom-windows
+                   (display-buffer-at-bottom)
+                   (window-height   . 10)))
+
     ;; Mode line settings
     (require 'doom-modeline)
     (setq doom-modeline-buffer-encoding nil)
@@ -293,9 +335,19 @@ with the "
                   (insert ";;; Type your Guile program here and evaluate it.\n")
                   (setq buffer-offer-save t)
                   (delete-other-windows)
-                  (set-window-dedicated-p (selected-window) t))
-                (run-guile)
-                (set-window-dedicated-p (selected-window) t)
+                  (set-window-dedicated-p (selected-window) t)
+
+                  (run-guile)
+                  (set-window-dedicated-p (selected-window) t)
+
+                  (call-interactively 'about-guile-studio)
+
+                  ;; This is necessary to show the REPL prompt after
+                  ;; displaying the side window.
+                  (pop-to-buffer "* Guile REPL *"))
+
+                (kill-buffer "*scratch*")
+
                 ;; Hide the cluttered Tools and Options menu items
                 (define-key global-map (vector 'menu-bar 'tools) 'undefined)
                 (define-key global-map (vector 'menu-bar 'options) 'undefined)))
