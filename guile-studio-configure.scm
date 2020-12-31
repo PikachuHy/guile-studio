@@ -17,7 +17,7 @@
     (setq-default indent-tabs-mode nil)
     (tool-bar-mode 1)
     (menu-bar-mode 1)
-    (set-scroll-bar-mode 'right)
+    (scroll-bar-mode -1)
 
     (require 'info)
     (setq Info-directory-list
