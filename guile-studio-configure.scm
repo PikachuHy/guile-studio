@@ -325,7 +325,12 @@ d=\"M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 \
               (lambda ()
                 (define-key geiser-mode-map
                   (vector 'menu-bar 'geiserm) 'undefined)))
-    (load-theme 'adwaita t)))
+
+    ;; Color theme
+    (require 'modus-themes)                 ; common code
+    (require 'modus-operandi-theme)         ; light theme
+    (require 'modus-vivendi-theme)          ; dark theme
+    (load-theme 'modus-operandi t)))
 
 (define (make-guile-studio-wrapper prefix share emacsdir emacs-package-dirs)
   (let ((wrapper (string-append prefix "/bin/guile-studio")))

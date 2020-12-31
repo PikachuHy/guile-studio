@@ -49,6 +49,7 @@
      `(("guile" ,guile-3.0)
        ("guile-picture-language" ,guile-picture-language)
        ("emacs" ,emacs)
+       ("emacs-modus-themes" ,emacs-modus-themes)
        ("emacs-geiser" ,emacs-geiser)
        ("emacs-company" ,emacs-company)
        ("emacs-ivy" ,emacs-ivy)
