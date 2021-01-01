@@ -413,7 +413,6 @@ with the "
                   (insert ";;; Type your Guile program here and evaluate it.\n")
                   (setq buffer-offer-save t)
                   (delete-other-windows)
-                  (set-window-dedicated-p (selected-window) t)
 
                   (run-guile)
                   (set-window-dedicated-p (selected-window) t)
