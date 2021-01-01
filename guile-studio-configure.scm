@@ -114,6 +114,7 @@ with the "
 	              (image-width (and img (car (image-size img))))
 	              (window-width (window-width)))
              (when img
+               (insert "\n")
                (when (> window-width image-width)
                  ;; Center the image in the window.
 	             (insert (propertize " " 'display
