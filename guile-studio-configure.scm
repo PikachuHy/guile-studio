@@ -83,8 +83,53 @@
       "Display the Picture Language manual in Info mode."
       (interactive)
       (info "picture-language"))
+
+    (defun string-display-pixel-width (string)
+      "Calculate pixel width of STRING."
+      (with-temp-buffer
+       (with-silent-modifications
+        (setf (buffer-string) string))
+       (variable-pitch-mode 1)
+       (if (get-buffer-window (current-buffer))
+           (car (window-text-pixel-size nil (line-beginning-position) (point)))
+           (set-window-buffer nil (current-buffer))
+           (car (window-text-pixel-size nil (line-beginning-position) (point))))))
+
+    (defun right-align (string &optional center-p)
+      (let ((right-margin 3))
+        (concat
+         (propertize " " 'display
+			         `(space :align-to
+                             (- ,(if center-p 'center 'right)
+                                (,(+ right-margin (string-display-pixel-width string))))))
+         string)))
+
+    ;; Adapted from fancy-splash-insert
+    (defun guile-studio-splash-insert (&rest args)
+      (let ((current-face nil))
+        (while args
+          (cond ((eq (car args) :face)
+	             (setq args (cdr args) current-face (car args))
+	             (if (functionp current-face)
+		             (setq current-face (funcall current-face))))
+	            ((eq (car args) :link)
+	             (setq args (cdr args))
+	             (let ((spec (car args)))
+	               (if (functionp spec)
+		               (setq spec (funcall spec)))
+	               (insert-button (car spec)
+			                      'face (list 'link current-face)
+			                      'action (cadr spec)
+			                      'help-echo (concat "mouse-2, RET: "
+						                             (or (nth 2 spec)
+						                                 "Follow this link"))
+			                      'follow-link t)))
+	            (t
+                 (insert (propertize (car args) 'face current-face))))
+          (setq args (cdr args)))))
+
     (defvar about-guile-studio-text
-      `((:face (variable-pitch font-lock-comment-face)
+      `((:face variable-pitch
          "Welcome to Guile Studio, an Emacs environment to play
 with the "
          :link ("GNU Guile programming language"
@@ -92,11 +137,32 @@ with the "
 	            "Browse https://www.gnu.org/software/guile/")
          " and its picture language.\n\n"
 
+         :face modus-theme-heading-1 "Manuals\n"
          :face variable-pitch
-         :link ("View Guile Manual" ,(lambda (_button) (menu-bar-read-guileref)))
-         "\tView the Guile manual.\n"
-         :link ("View Picture Language Manual" ,(lambda (_button) (menu-bar-read-pictref)))
-         "\tView the Picture Language manual.\n"
+         "  Learn all about Guile "
+         :link (,(right-align "View Guile Manual")
+                ,(lambda (_button) (menu-bar-read-guileref)))
+         "\n"
+         "  How to draw pictures "
+         :link (,(right-align "View Picture Language Manual")
+                ,(lambda (_button) (menu-bar-read-pictref)))
+         "\n\n"
+         :face modus-theme-heading-1 "Common commands\n"
+         :face variable-pitch
+         "  Save " ,(right-align "C-x C-s" t) "\t"
+         "  Help " ,(right-align "C-h") "\n"
+         
+         "  Save as " ,(right-align "C-x C-w" t) "\t"
+         "  Cancel " ,(right-align "C-g") "\n"
+
+         "  Open a new file " ,(right-align "C-x C-f" t) "\t"
+         "  Undo " ,(right-align "C-/") "\n"
+
+         "  Close side window " ,(right-align "q" t) "\t"
+         "  Close buffer " ,(right-align "C-x k") "\n"
+
+         "  Browse directory " ,(right-align "C-x d" t) "\t"
+         "  Quit " ,(right-align "C-x C-c") "\n"
          "\n")))
 
     (defun about-guile-studio ()
@@ -128,7 +194,7 @@ with the "
 		                      'follow-link t)
 	             (insert "\n\n"))))
            (dolist (text about-guile-studio-text)
-                   (apply (function fancy-splash-insert) text)
+                   (apply (function guile-studio-splash-insert) text)
                    (insert "\n")))
          (use-local-map splash-screen-keymap)
          (setq buffer-read-only t)
