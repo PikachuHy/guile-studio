@@ -75,8 +75,6 @@
     ;; Hide the fact that this is Emacs
     (modify-frame-parameters nil '((title . "Guile Studio")))
 
-    ;; Unclutter help menu.
-    (require 'menu-bar)
     (defun menu-bar-read-guileref ()
       "Display the Guile Reference manual in Info mode."
       (interactive)
@@ -140,6 +138,8 @@ with the "
          (forward-line 4))
         (switch-to-buffer splash-buffer)))
 
+    ;; Unclutter help menu.
+    (require 'menu-bar)
     (setq menu-bar-help-menu
           (let ((menu (make-sparse-keymap "Help")))
             (bindings--define-key menu (vector 'about-gnu-project)
