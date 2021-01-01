@@ -384,6 +384,10 @@ with the "
     (require 'modus-themes)                 ; common code
     (require 'modus-operandi-theme)         ; light theme
     (require 'modus-vivendi-theme)          ; dark theme
+    (setq modus-themes-scale-headings t
+          modus-themes-variable-pitch-headings t
+          modus-themes-bold-constructs t
+          modus-themes-links 'no-underline)
     (load-theme 'modus-operandi t)))
 
 (define (make-guile-studio-wrapper prefix share emacsdir emacs-package-dirs)
