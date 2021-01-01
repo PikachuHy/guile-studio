@@ -19,6 +19,9 @@
     (menu-bar-mode 1)
     (scroll-bar-mode -1)
 
+    ;; Show only buffers with the same major mode in the same tab line.
+    (setq tab-line-tabs-function 'tab-line-tabs-mode-buffers)
+
     (require 'ivy)
     (ivy-mode 1)
     ;; Enter directory when hitting RET
@@ -441,6 +444,7 @@ with the "
               (lambda ()
                 (paren-face-mode 1)
                 (show-paren-mode 1)
+                (tab-line-mode 1)
                 (unless (local-variable-p 'tool-bar-map)
                   (set (make-local-variable 'tool-bar-map)
                        scheme-tool-bar-map))))
