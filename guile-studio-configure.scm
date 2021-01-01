@@ -330,7 +330,8 @@ with the "
       (rx (seq "* Guile REPL *" (* anychar))))
     (add-to-list 'display-buffer-alist
                  `(,bottom-windows
-                   (display-buffer-at-bottom)
+                   (display-buffer-reuse-window
+                    display-buffer-at-bottom)
                    (window-height   . 10)))
 
     (require 'dired-sidebar)
