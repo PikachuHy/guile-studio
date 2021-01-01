@@ -20,7 +20,9 @@
     (scroll-bar-mode -1)
 
     ;; Show only buffers with the same major mode in the same tab line.
+    (require 'tab-line)
     (setq tab-line-tabs-function 'tab-line-tabs-mode-buffers)
+    (setq tab-line-close-tab-function 'kill-buffer)
 
     (require 'ivy)
     (ivy-mode 1)
@@ -464,7 +466,16 @@ with the "
           modus-themes-variable-pitch-headings t
           modus-themes-bold-constructs t
           modus-themes-links 'no-underline)
-    (load-theme 'modus-operandi t)))
+    (load-theme 'modus-operandi t)
+
+    ;; Increase tab margins
+    (let ((palette modus-themes-colors-operandi))
+      (set-face-attribute 'tab-line-tab nil
+                          :box `(:line-width 8
+                                 :color ,(cdr (assoc 'bg-tab-active palette))))
+      (set-face-attribute 'tab-line-tab-inactive nil
+                          :box `(:line-width 8
+                                 :color ,(cdr (assoc 'bg-tab-inactive palette)))))))
 
 (define (make-guile-studio-wrapper prefix share emacsdir emacs-package-dirs)
   (let ((wrapper (string-append prefix "/bin/guile-studio")))
