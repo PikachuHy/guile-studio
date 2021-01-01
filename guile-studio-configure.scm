@@ -315,7 +315,7 @@ with the "
               "*Warnings*"
               "*Compile-Log*"
               "*Messages*"
-              "*Geiser-dbg*"
+              "*Geiser dbg*"
               (seq (* anychar) "*Completions" (* anychar)))))
     (add-to-list 'display-buffer-alist
                  `(,popup-bottom-windows
