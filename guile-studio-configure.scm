@@ -330,6 +330,11 @@ with the "
                    (display-buffer-at-bottom)
                    (window-height   . 10)))
 
+    (require 'dired-sidebar)
+    (global-set-key (kbd "C-x d") 'dired-sidebar-toggle-sidebar)
+    ;; Delete dired window on "q"
+    (define-key dired-mode-map (kbd "q") 'delete-window)
+
     ;; Mode line settings
     (require 'doom-modeline)
     (setq doom-modeline-buffer-encoding nil)
