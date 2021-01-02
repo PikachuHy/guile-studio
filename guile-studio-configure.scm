@@ -19,6 +19,8 @@
     (menu-bar-mode 1)
     (scroll-bar-mode -1)
 
+    (setq window-resize-pixelwise t)
+
     ;; Show only buffers with the same major mode in the same tab line.
     (require 'tab-line)
     (setq tab-line-tabs-function 'tab-line-tabs-mode-buffers)
