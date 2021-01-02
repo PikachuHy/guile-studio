@@ -416,23 +416,33 @@ with the "
 
     (add-hook 'emacs-startup-hook
               (lambda ()
+                (require 'winner)
+                (winner-mode 1)
                 (let ((buf (generate-new-buffer "untitled.scm")))
-                  (switch-to-buffer buf nil t)
-                  (funcall (and initial-major-mode))
-                  (insert ";;; Welcome to Guile Studio!\n")
-                  (insert ";;; Type your Guile program here and evaluate it.\n")
-                  (setq buffer-offer-save t)
-                  (delete-other-windows)
+                  (with-current-buffer buf
+                    (switch-to-buffer buf nil t)
+                    (set-window-dedicated-p (selected-window) nil)
+                    (set-window-parameter (selected-window) 'guile-studio/edit t)
+                    (funcall (and initial-major-mode))
+                    (insert ";;; Welcome to Guile Studio!\n")
+                    (insert ";;; Type your Guile program here and evaluate it.\n")
+                    (setq buffer-offer-save t)
 
-                  (run-guile)
-                  (set-window-dedicated-p (selected-window) t)
-
-                  (call-interactively 'about-guile-studio)
+                    (switch-to-geiser)
+                    (set-window-dedicated-p (selected-window) t)
+                    (call-interactively 'about-guile-studio))
 
                   ;; This is necessary to show the REPL prompt after
                   ;; displaying the side window.
                   (pop-to-buffer "* Guile REPL *"))
 
+                ;; Always restore default layout
+                (defvar guile-studio--layout (winner-conf))
+                (define-key global-map (kbd "ESC ESC ESC")
+                  (lambda ()
+                    (interactive)
+                    (keyboard-escape-quit)
+                    (winner-set guile-studio--layout)))
                 (kill-buffer "*scratch*")
 
                 ;; Hide the cluttered Tools and Options menu items
