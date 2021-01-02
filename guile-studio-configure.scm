@@ -378,6 +378,7 @@ with the "
     (global-unset-key (vector 'mode-line 'mouse-3)) ; 'mouse-delete-window
 
     ;; Don't switch buffers when clicking on the name.
+    (define-key mode-line-buffer-identification-keymap (vector 'mode-line 'mouse-1) nil)
     (define-key mode-line-buffer-identification-keymap (vector 'mode-line 'mouse-3) nil)
 
     ;; Context menu on right click.
