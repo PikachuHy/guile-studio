@@ -170,6 +170,8 @@ with the "
 
          "  Browse directory " ,(right-align "C-x d" t) "\t"
          "  Quit " ,(right-align "C-x C-c") "\n"
+         "\n"
+         "Access a context-specific menu by right-clicking."
          "\n")))
 
     (defun about-guile-studio ()
