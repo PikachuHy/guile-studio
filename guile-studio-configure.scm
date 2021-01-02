@@ -393,15 +393,14 @@ with the "
     (define-key mode-line-buffer-identification-keymap (vector 'mode-line 'mouse-3) nil)
 
     ;; Context menu on right click.
-    (require 'cl-macs)
     (defun context-menu ()
       (let ((menu (make-sparse-keymap)))
-        (cl-case major-mode
-          (geiser-repl-mode
+        (pcase major-mode
+          ('geiser-repl-mode
            (define-key menu (vector 'insert-image)
              '("Insert image" . geiser--guile-picture-language--pict-from-file))
            menu)
-          (scheme-mode
+          ('scheme-mode
            (define-key menu (vector 'switch-to-repl)
              '("Switch to REPL" . switch-to-geiser))
            (define-key menu (vector 'eval-buffer)
