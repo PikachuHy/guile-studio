@@ -15,7 +15,7 @@
       (guix-emacs-autoload-packages))
 
     (setq-default indent-tabs-mode nil)
-    (tool-bar-mode 1)
+    (tool-bar-mode -1)
     (menu-bar-mode 1)
     (scroll-bar-mode -1)
 
@@ -373,6 +373,32 @@ with the "
     (global-unset-key (vector 'mode-line 'mouse-2)) ; 'mouse-delete-other-windows
     (global-unset-key (vector 'mode-line 'mouse-3)) ; 'mouse-delete-window
 
+    ;; Don't switch buffers when clicking on the name.
+    (define-key mode-line-buffer-identification-keymap (vector 'mode-line 'mouse-3) nil)
+
+    ;; Context menu on right click.
+    (require 'cl-macs)
+    (defun context-menu ()
+      (let ((menu (make-sparse-keymap)))
+        (cl-case major-mode
+          (geiser-repl-mode
+           (define-key menu (vector 'insert-image)
+             '("Insert image" . geiser--guile-picture-language--pict-from-file))
+           menu)
+          (scheme-mode
+           (define-key menu (vector 'eval-buffer)
+             '("Evaluate buffer" . geiser-eval-buffer))
+           (define-key menu (vector 'lookup-documentation)
+             '("Show documentation". geiser-doc-symbol-at-point))
+           menu)
+          (t
+           (mouse-menu-major-mode-map)))))
+
+    (global-set-key (vector 'mouse-3)
+                    (lambda (event)
+                      (interactive "e")
+                      (mouse-set-point event)
+                      (popup-menu (context-menu))))
 
     (defun geiser--guile-picture-language--pict-from-file ()
       (interactive)
@@ -384,28 +410,6 @@ with the "
          (concat "(pict-from-file \""
                  file
                  "\")"))))
-
-    (defvar geiser-repl-tool-bar-map (make-sparse-keymap))
-    (define-key geiser-repl-tool-bar-map (vector 'insert-image)
-      '(menu-item " Insert image" geiser--guile-picture-language--pict-from-file
-                  :image
-                  (image :type png
-                         :file ,(string-append icons "/24x24/legacy/insert-image.png"))
-                  :help "Insert image..."))
-
-    (defvar scheme-tool-bar-map (make-sparse-keymap))
-    (define-key scheme-tool-bar-map (vector 'eval-buffer)
-      '(menu-item " Evaluate" geiser-eval-buffer
-                  :image
-                  (image :type png
-                         :file ,(string-append icons "/24x24/legacy/media-playback-start.png"))
-                  :help "Evaluate buffer..."))
-    (define-key scheme-tool-bar-map (vector 'lookup-documentation)
-      '(menu-item " Documentation" geiser-doc-symbol-at-point
-                  :image
-                  (image :type png
-                         :file ,(string-append icons "/24x24/legacy/help-faq.png"))
-                  :help "Show documentation for the current symbol"))
 
     (add-to-list 'initial-frame-alist
                  '(fullscreen . maximized))
@@ -439,18 +443,12 @@ with the "
     (add-hook 'geiser-repl-mode-hook
               (lambda ()
                 (paren-face-mode 1)
-                (show-paren-mode 1)
-                (unless (local-variable-p 'tool-bar-map)
-                  (set (make-local-variable 'tool-bar-map)
-                       geiser-repl-tool-bar-map))))
+                (show-paren-mode 1)))
     (add-hook 'scheme-mode-hook
               (lambda ()
                 (paren-face-mode 1)
                 (show-paren-mode 1)
-                (tab-line-mode 1)
-                (unless (local-variable-p 'tool-bar-map)
-                  (set (make-local-variable 'tool-bar-map)
-                       scheme-tool-bar-map))))
+                (tab-line-mode 1)))
 
     ;; Don't show the Geiser menu in a Scheme buffer
     (add-hook 'geiser-mode-hook
