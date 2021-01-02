@@ -171,7 +171,8 @@ with the "
          "  Browse directory " ,(right-align "C-x d" t) "\t"
          "  Quit " ,(right-align "C-x C-c") "\n"
          "\n"
-         "Access a context-specific menu by right-clicking."
+         "Access a context-specific menu by right-clicking.\n"
+         "Toggle between dark and light mode with F5."
          "\n")))
 
     (defun about-guile-studio ()
@@ -492,16 +493,19 @@ with the "
           modus-themes-variable-pitch-headings t
           modus-themes-bold-constructs t
           modus-themes-links 'no-underline)
+    (defun increase-tab-margins ()
+      "Increase tab margins."
+      (let ((palette (modus-themes--active-theme)))
+        (set-face-attribute 'tab-line-tab nil
+                            :box `(:line-width 8
+                                   :color ,(cdr (assoc 'bg-tab-active palette))))
+        (set-face-attribute 'tab-line-tab-inactive nil
+                            :box `(:line-width 8
+                                   :color ,(cdr (assoc 'bg-tab-inactive palette))))))
+    (add-hook 'modus-themes-after-load-theme-hook 'increase-tab-margins)
+    (global-set-key (kbd "<f5>") 'modus-themes-toggle)
     (load-theme 'modus-operandi t)
-
-    ;; Increase tab margins
-    (let ((palette modus-themes-colors-operandi))
-      (set-face-attribute 'tab-line-tab nil
-                          :box `(:line-width 8
-                                 :color ,(cdr (assoc 'bg-tab-active palette))))
-      (set-face-attribute 'tab-line-tab-inactive nil
-                          :box `(:line-width 8
-                                 :color ,(cdr (assoc 'bg-tab-inactive palette)))))))
+    (increase-tab-margins)))
 
 (define (make-guile-studio-wrapper prefix share emacsdir emacs-package-dirs)
   (let ((wrapper (string-append prefix "/bin/guile-studio")))
