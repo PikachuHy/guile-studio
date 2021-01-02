@@ -476,7 +476,8 @@ with the "
               (lambda ()
                 (paren-face-mode 1)
                 (show-paren-mode 1)
-                (tab-line-mode 1)))
+                (tab-line-mode 1)
+                (display-line-numbers-mode 1)))
 
     ;; Don't show the Geiser menu in a Scheme buffer
     (add-hook 'geiser-mode-hook
