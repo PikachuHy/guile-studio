@@ -391,6 +391,8 @@ with the "
              '("Insert image" . geiser--guile-picture-language--pict-from-file))
            menu)
           (scheme-mode
+           (define-key menu (vector 'switch-to-repl)
+             '("Switch to REPL" . switch-to-geiser))
            (define-key menu (vector 'eval-buffer)
              '("Evaluate buffer" . geiser-eval-buffer))
            (define-key menu (vector 'lookup-documentation)
