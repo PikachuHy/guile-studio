@@ -348,6 +348,15 @@ with the "
     ;; Mode line settings
     (require 'doom-modeline)
     (setq doom-modeline-buffer-encoding nil)
+
+    ;; Remove incorrect help echo from buffer name
+    (require 'doom-modeline-segments)
+    (doom-modeline-def-segment buffer-info
+                               (concat
+                                (doom-modeline-spc)
+                                (doom-modeline--buffer-mode-icon)
+                                (doom-modeline--buffer-state-icon)
+                                (propertize "%b" 'face 'doom-modeline-buffer-file)))
     (doom-modeline-mode 1)
 
     ;; Stop using the minibuffer when leaving it
