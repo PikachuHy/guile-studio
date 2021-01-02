@@ -305,6 +305,7 @@ with the "
                  `(,popup-right-side-windows
                    (display-buffer-reuse-window
                     display-buffer-in-side-window)
+                   (inhibit-same-window . t)
                    (side            . right)
                    (slot            . 0)
                    (preserve-size   . (t . t))
@@ -325,6 +326,7 @@ with the "
                  `(,popup-bottom-windows
                    (display-buffer-reuse-window
                     display-buffer-in-side-window)
+                   (inhibit-same-window . t)
                    (side            . bottom)
                    (slot            . 0)
                    (preserve-size   . (t . t))
