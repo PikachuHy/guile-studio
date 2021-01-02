@@ -210,7 +210,7 @@ with the "
              (view-mode-enter nil 'kill-buffer))
          (goto-char (point-min))
          (forward-line 4))
-        (switch-to-buffer splash-buffer)))
+        (pop-to-buffer splash-buffer 'display-buffer-in-side-window)))
 
     ;; Unclutter help menu.
     (require 'menu-bar)
