@@ -14,6 +14,10 @@
     (when (require 'guix-emacs nil t)
       (guix-emacs-autoload-packages))
 
+    (setq-default line-spacing 2)
+    ;; Increase default font size
+    (set-face-attribute 'default nil :height 112)
+
     (setq-default indent-tabs-mode nil)
     (tool-bar-mode -1)
     (menu-bar-mode 1)
