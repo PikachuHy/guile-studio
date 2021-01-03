@@ -79,9 +79,17 @@
           apropos-do-all t
           mouse-yank-at-point t
           require-final-newline t
-          visible-bell t
+          visible-bell nil
           load-prefer-newer t
           save-place-file (concat user-emacs-directory "places"))
+
+    (setq ring-bell-function
+          (lambda ()
+            (let ((orig-fg (face-foreground 'mode-line)))
+              (set-face-foreground 'mode-line "#F2804F")
+              (run-with-idle-timer 0.1 nil
+                                   (lambda (fg) (set-face-foreground 'mode-line fg))
+                                   orig-fg))))
 
     ;; Hide the fact that this is Emacs
     (modify-frame-parameters nil '((title . "Guile Studio")))
