@@ -335,7 +335,6 @@ with the "
               "*Warnings*"
               "*Compile-Log*"
               "*Messages*"
-              "*Geiser dbg*"
               (seq (* anychar) "*Completions" (* anychar)))))
     (add-to-list 'display-buffer-alist
                  `(,popup-bottom-windows
@@ -348,7 +347,8 @@ with the "
                    (window-height   . 0.16)))
 
     (defvar bottom-windows
-      (rx (seq "* Guile REPL *" (* anychar))))
+      (rx (or (seq "* Guile REPL *" (* anychar))
+              "*Geiser dbg*")))
     (add-to-list 'display-buffer-alist
                  `(,bottom-windows
                    (display-buffer-reuse-window
