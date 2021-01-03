@@ -4,7 +4,7 @@
              (srfi srfi-1)
              (srfi srfi-26))
 
-(define (generate-configuration prefix emacsdir guiledir picture-language icons emacs-package-dirs)
+(define (generate-configuration prefix emacsdir guiledir picture-language emacs-package-dirs)
   `(progn
     (let ((guix-emacs.el
            (expand-file-name
@@ -568,7 +568,7 @@ exec ~a/bin/emacs -mm --no-site-file --no-site-lisp --no-x-resources --no-init-f
       (map (cut string-append infodir "/" <>)
            (or (scandir infodir info-file?) '()))))
   (match (command-line)
-    ((_ prefix emacsdir guiledir picture-language icons . emacs-package-dirs)
+    ((_ prefix emacsdir guiledir picture-language . emacs-package-dirs)
      (let* ((share (string-append prefix "/share"))
             (datadir (string-append share "/guile-studio"))
             (infodir (string-append datadir "/info")))
@@ -589,7 +589,6 @@ exec ~a/bin/emacs -mm --no-site-file --no-site-lisp --no-x-resources --no-init-f
                                     emacsdir
                                     guiledir
                                     picture-language
-                                    icons
                                     emacs-package-dirs)
             #:display? #f)))
 
@@ -614,7 +613,7 @@ exec ~a/bin/emacs -mm --no-site-file --no-site-lisp --no-x-resources --no-init-f
      #t)
     ((script . _)
      (format (current-error-port)
-             "usage: ~a prefix emacsdir picture-language icons emacs-package-dirs ...\n"
+             "usage: ~a prefix emacsdir picture-language emacs-package-dirs ...\n"
              script))))
 
 (main)

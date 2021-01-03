@@ -24,10 +24,7 @@
         ,@%gnu-build-system-modules)
        #:tests? #f                      ; there are none
        #:make-flags
-       (list (string-append "ICONS_DIR="
-                            (assoc-ref %build-inputs "adwaita-icon-theme")
-                            "/share/icons/Adwaita/")
-             (string-append "PICT_DIR="
+       (list (string-append "PICT_DIR="
                             (assoc-ref %build-inputs "guile-picture-language"))
              (string-append "EMACS_DIR="
                             (assoc-ref %build-inputs "emacs"))
@@ -61,8 +58,7 @@
        ("emacs-ivy" ,emacs-ivy)
        ("emacs-flycheck" ,emacs-flycheck)
        ("emacs-flycheck-guile" ,emacs-flycheck-guile)
-       ("emacs-paren-face" ,emacs-paren-face)
-       ("adwaita-icon-theme" ,adwaita-icon-theme)))
+       ("emacs-paren-face" ,emacs-paren-face)))
     (native-inputs
      `(("texinfo" ,texinfo)))
     (home-page "https://gnu.org/software/guile")

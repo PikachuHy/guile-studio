@@ -10,7 +10,7 @@ build:
 	mkdir -p $(PREFIX)/bin && \
 		mkdir -p $(PREFIX)/share && \
 			guile -s guile-studio-configure.scm \
-				$(PREFIX) $(EMACS_DIR) $(GUILE_DIR) $(PICT_DIR) $(ICONS_DIR) $(INPUTS)
+				$(PREFIX) $(EMACS_DIR) $(GUILE_DIR) $(PICT_DIR) $(INPUTS)
 
 dist:
 	mkdir -p guile-studio && cp $(SOURCES) guile-studio && \
