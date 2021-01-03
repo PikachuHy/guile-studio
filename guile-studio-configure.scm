@@ -53,14 +53,17 @@
     ;; Studio is first started.
     (defun guile-studio--geiser-guile--parameters (params)
       (append (list "-C" ,(string-append prefix "/lib/guile/3.0/site-ccache/"))
-              (list "-C" ,(string-append picture-language "/lib/guile/3.0/site-ccache/"))
+              ,@(map (lambda (dir) (list 'list "-C" dir))
+                     (string-tokenize (getenv "GUILE_LOAD_COMPILED_PATH")
+                                      (char-set-complement (char-set #\:))))
               params
               (list "-e" "(@ (guile-studio-init) guile-studio-init)")))
     (advice-add 'geiser-guile--parameters
                 :filter-return (function guile-studio--geiser-guile--parameters))
     (setq geiser-guile-load-path
-          '(,(string-append picture-language
-                            "/share/guile/site/3.0/")))
+          (append ,@(map (lambda (dir) (list 'list "-C" dir))
+                         (string-tokenize (getenv "GUILE_LOAD_PATH")
+                                          (char-set-complement (char-set #\:))))))
 
     (setq geiser-autodoc-identifier-format "%s → %s")
     (setq geiser-default-implementation 'guile
