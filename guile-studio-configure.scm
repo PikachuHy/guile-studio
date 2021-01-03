@@ -545,7 +545,7 @@ with the "
       (lambda ()
         (format #t "#!/bin/sh
 EMACSLOADPATH=~a:
-exec ~a/bin/emacs --no-site-file --no-site-lisp --no-x-resources --no-init-file --load ~a/guile-studio.el
+exec ~a/bin/emacs -mm --no-site-file --no-site-lisp --no-x-resources --no-init-file --load ~a/guile-studio.el
 "
                 (string-join
                  (map (cut string-append <> "/share/emacs/site-lisp")
