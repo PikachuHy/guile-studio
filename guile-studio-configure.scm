@@ -68,6 +68,7 @@
     (setq geiser-autodoc-identifier-format "%s → %s")
     (setq geiser-default-implementation 'guile
           geiser-active-implementations '(guile)
+          geiser-mode-smart-tab-p t
 
           initial-major-mode 'scheme-mode
           inhibit-splash-screen t
