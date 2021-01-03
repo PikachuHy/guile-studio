@@ -52,6 +52,7 @@
        ("emacs-f" ,emacs-f) ; TODO: needed by doom-modeline
        ("emacs-memoize" ,emacs-memoize) ; TODO: needed by all-the-icons
        ("emacs-all-the-icons" ,emacs-all-the-icons)
+       ("emacs-all-the-icons-dired" ,emacs-all-the-icons-dired)
        ("emacs-dired-sidebar" ,emacs-dired-sidebar)
        ("emacs-doom-modeline" ,emacs-doom-modeline)
        ("emacs-modus-themes" ,emacs-modus-themes)
