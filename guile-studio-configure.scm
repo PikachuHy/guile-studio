@@ -455,7 +455,7 @@ with the "
                     (set-window-parameter (selected-window) 'guile-studio/edit t)
                     (funcall (and initial-major-mode))
                     (insert ";;; Welcome to Guile Studio!\n")
-                    (insert ";;; Type your Guile program here and evaluate it.\n")
+                    (insert ";;; Type your Guile program here and evaluate it.\n\n")
                     (setq buffer-offer-save t)
 
                     (switch-to-geiser)
