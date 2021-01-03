@@ -378,6 +378,8 @@ with the "
     (global-set-key (kbd "C-x d") 'dired-sidebar-toggle-sidebar)
     ;; Delete dired window on "q"
     (define-key dired-mode-map (kbd "q") 'delete-window)
+    (setq dired-sidebar-one-instance-p t
+          dired-sidebar-close-sidebar-on-file-open t)
 
     ;; Mode line settings
     (require 'doom-modeline)
