@@ -288,18 +288,33 @@ with the "
                                               :help "Discard (kill) current buffer"))
 
             (bindings--define-key menu (vector 'dired)
-                                  '(menu-item "Open Directory..." dired
-                                              :help "Read a directory, to operate on its files"))
-            (bindings--define-key menu (vector 'open-file)
-                                  '(menu-item "Open File..." menu-find-file-existing
-                                              :help "Read an existing file into an Emacs buffer"))
+                                  '(menu-item "Open File..." dired-sidebar-show-sidebar
+                                              :help "Show the directory browser in a side bar"))
             (bindings--define-key menu (vector 'new-file)
-                                  '(menu-item "Visit New File..." find-file
-                                              :enable menu-bar-non-minibuffer-window-p
-                                              :help "Specify a new file's name, to edit the file"))
+                                  '(menu-item "New File" (lambda ()
+                                                           (interactive)
+                                                           (select-window
+                                                            (get-window-with-predicate
+                                                             (lambda (window)
+                                                               (window-parameter window 'guile-studio/edit))))
+                                                           (find-file "untitled.scm"))
+                                              :help "Create a new file buffer"))
             menu))
     (bindings--define-key global-map (vector 'menu-bar 'file)
                           (cons (purecopy "File") menu-bar-file-menu))
+
+    ;; Unclutter Edit menu
+    (define-key menu-bar-edit-menu (vector 'goto) nil)
+    (define-key menu-bar-edit-menu (vector 'bookmark) nil)
+    (define-key menu-bar-edit-menu (vector 'separator-bookmark) nil)
+    (define-key menu-bar-edit-menu (vector 'fill) nil)
+    (define-key menu-bar-edit-menu (vector 'props) nil)
+
+    (define-key menu-bar-edit-menu (vector 'replace 'tags-repl) nil)
+    (define-key menu-bar-edit-menu (vector 'replace 'tags-repl-continue) nil)
+    (define-key menu-bar-edit-menu (vector 'search)
+      '(menu-item "Search..." isearch-forward-regexp
+                  :help "Incrementally search for a regular expression"))
 
     ;; Check syntax on the fly
     (require 'flycheck)
