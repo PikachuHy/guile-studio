@@ -1,6 +1,7 @@
 VERSION = 0.1.0
 
 SOURCES = \
+  guile-studio.el \
   guile-studio-configure.scm \
   logo.svg \
   Makefile \
