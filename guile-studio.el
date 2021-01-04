@@ -443,7 +443,7 @@ with the "
        (define-key menu (vector 'lookup-documentation)
          '("Show documentation". geiser-doc-symbol-at-point))
        menu)
-      (t
+      (_
        (mouse-menu-major-mode-map)))))
 
 (global-set-key (vector 'mouse-3)
