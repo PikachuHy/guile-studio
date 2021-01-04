@@ -80,8 +80,8 @@
       initial-major-mode 'scheme-mode
       inhibit-splash-screen t
       confirm-kill-processes nil      ; kill Geiser on exit
-      x-select-enable-clipboard t
-      x-select-enable-primary t
+      select-enable-clipboard t
+      select-enable-primary t
       save-interprogram-paste-before-kill t
       mouse-yank-at-point t
       require-final-newline t
