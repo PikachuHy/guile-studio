@@ -5,6 +5,11 @@
 ;; (defvar %guile-studio/guile-load-path "@GUILE_LOAD_PATH@")
 ;; (defvar %guile-studio/guile-load-compiled-path "@GUILE_LOAD_COMPILED_PATH@")
 
+(declare-function guix-emacs-autoload-packages "guix-emacs" ())
+(declare-function geiser-repl--send "geiser-repl" (cmd &optional save-history))
+(declare-function winner-conf "winner" ())
+(declare-function winner-set "winner" (conf))
+
 
 (let ((guix-emacs.el
        (expand-file-name
