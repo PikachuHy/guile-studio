@@ -55,6 +55,7 @@
 (electric-pair-mode 1)
 (require 'scheme)
 (require 'geiser)
+(require 'paren-face)
 
 ;; Add site-ccache directories to %load-compiled-path, and run the
 ;; init routine.  We don't use geiser-guile-init-file because that
