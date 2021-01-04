@@ -83,12 +83,10 @@
       x-select-enable-clipboard t
       x-select-enable-primary t
       save-interprogram-paste-before-kill t
-      apropos-do-all t
       mouse-yank-at-point t
       require-final-newline t
       visible-bell nil
-      load-prefer-newer t
-      save-place-file (concat user-emacs-directory "places"))
+      load-prefer-newer t)
 
 (setq ring-bell-function
       (lambda ()
