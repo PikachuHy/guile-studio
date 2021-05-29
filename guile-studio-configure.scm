@@ -5,6 +5,14 @@
              (srfi srfi-1)
              (srfi srfi-26))
 
+(define (emacs-package-directory root)
+  (define (directory? thing)
+    (eq? 'directory (stat:type (stat (string-append root "/" thing)))))
+  (match (scandir root directory?)
+    (("." ".." subdir . rest)
+     (string-append root "/" subdir))
+    (_ #false)))
+
 (define (make-guile-studio-wrapper prefix share emacsdir emacs-package-dirs)
   (let ((wrapper (string-append prefix "/bin/guile-studio")))
     (with-output-to-file wrapper
@@ -14,8 +22,10 @@ EMACSLOADPATH=~a:
 exec ~a/bin/emacs -mm --no-site-file --no-site-lisp --no-x-resources --no-init-file --load ~a/guile-studio.el
 "
                 (string-join
-                 (map (cut string-append <> "/share/emacs/site-lisp")
-                      emacs-package-dirs) ":")
+                 (filter-map (lambda (dir)
+                               (emacs-package-directory
+                                (string-append dir "/share/emacs/site-lisp")))
+                             emacs-package-dirs) ":")
                 emacsdir share)))
     (chmod wrapper #o555)))
 
